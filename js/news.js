@@ -33,7 +33,7 @@ const NewsNumLoad = (code) => {
     fetch(`https://openapi.programming-hero.com/api/news/category/${code}`)
         .then(res => res.json())
         .then(data => displayNewsNum(data))
-    console.log(code);
+
 }
 const allNews = (code) => {
     fetch(`https://openapi.programming-hero.com/api/news/${code}`)//${code}
@@ -44,6 +44,8 @@ const allNews = (code) => {
 const newsFeild = document.getElementById('allNews');
 const views = [];
 const displayNewsNum = (newsNo) => {
+    //start loader
+    toggleSpinner(true);
 
     const blockNewsNo = document.getElementById('newsNo');
 
@@ -55,12 +57,14 @@ const displayNewsNum = (newsNo) => {
     newsNoDiv.classList.add('text-center');
     //newsNoDiv.classList.add('d-sm-inline-block');
     if (newsNo.data.length == 0) {
+        toggleSpinner(false);
         newsNoDiv.innerHTML = `
         No news found for this Category
         `
 
     }
     else if (newsNo.data.length == 26) {
+
         newsNoDiv.innerHTML = `
         ${newsNo.data.length} news found for All News Category 
         `
@@ -166,7 +170,7 @@ const displayAllNews = (allNews) => {
          `
 
 
-
+    toggleSpinner(false);
 
     newsFeild.appendChild(newsDiv);
 
@@ -175,5 +179,13 @@ const displayAllNews = (allNews) => {
 for (const view of views)
     console.log(view)
 
-
+const toggleSpinner = isLoading => {
+    const loaderSection = document.getElementById('loader');
+    if (isLoading) {
+        loaderSection.classList.remove('d-none')
+    }
+    else {
+        loaderSection.classList.add('d-none');
+    }
+}
 NewsNumLoad('08');
