@@ -108,7 +108,8 @@ const displayAllNews = (allNews) => {
     // views:allNews.data[0].total_view
     //rating :allNews.data[0].rating.number
     obj.push(allNews.data[0]);
-    console.log(allNews);
+
+
     //blockNewsNo.innerHTML = '';
     //newsFeild.innerHTML = '';
     //views.push(allNews.data[0].total_view);
@@ -130,7 +131,7 @@ const displayAllNews = (allNews) => {
             </div>
         </div>
     </div>
-    <div class="row g-0">
+    <div class="row g-1">
         <div class="col-md-6 justify-content-center">
             <img src="${allNews.data[0].thumbnail_url}" class="img-fluid rounded-start" alt="...">
         </div>
@@ -148,13 +149,13 @@ const displayAllNews = (allNews) => {
                         <div class="d-flex">
                             <img src="${allNews.data[0].author.img}" class="rounded-circle news-img " alt="">
                             <div style="line-height : 15px;">
-                                <p class="fw-bold my-3 px-2">${allNews.data[0].author.name}</p>
+                                <p class="fw-bold my-3 px-2">${allNews.data[0].author.name ? allNews.data[0].author.name : 'No author found'}</p>
                                 <p class="text-muted my-3 px-2">${allNews.data[0].author.published_date}</p>
                             </div>
                         </div>
                         <div class="d-flex">
                             <i class="fa-regular fa-eye mx-2 my-1"></i>
-                            <p class="fw-bold ">${allNews.data[0].total_view}</p>
+                            <p class="fw-bold ">${allNews.data[0].total_view ? allNews.data[0].total_view : 'No view found'}</p>
                         </div>
                         <div class="d-flex">
                             <i class="fa-solid fa-star filled mx-2 my-2"></i>
@@ -185,6 +186,9 @@ const displayAllNews = (allNews) => {
 }
 
 
+// console.log(obj.length)
+
+
 const toggleSpinner = isLoading => {
     const loaderSection = document.getElementById('loader');
     if (isLoading) {
@@ -199,15 +203,19 @@ const newsDetails = (code) => {
     fetch(`https://openapi.programming-hero.com/api/news/${code}`)//${code}
         .then(res => res.json())
         .then(data => displayNewsDetails(data))
-    console.log(`https://openapi.programming-hero.com/api/news/${code}`)
+    //console.log(`https://openapi.programming-hero.com/api/news/${code}`)
 }
 const displayNewsDetails = news => {
     try {
-
+        console.log(news.data[0].author.name.length)
         const newsDetails = document.getElementById('news-details');
         newsDetails.innerHTML = `
         <h3>Details:</h3>
-         ${news.data[0].details}
+        <p> ${news.data[0].details}</p>
+        <hr>
+        <p>Author Name: ${news.data[0].author.name ? news.data[0].author.name : 'No author found'}</p>
+        <p>User View: ${news.data[0].total_view ? news.data[0].total_view : 'No view found'}</p>
+         
     `;
     }
     catch (error) {
