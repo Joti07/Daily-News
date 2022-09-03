@@ -42,8 +42,14 @@ const allNews = (code) => {
     // console.log(data)
 }
 const newsFeild = document.getElementById('allNews');
-const views = [];
+
 const displayNewsNum = (newsNo) => {
+    const newses = newsNo.data;
+    //console.log(newses)
+    newses.sort((a, b) => {
+        return b.total_view - a.total_view;
+    });
+    //console.log(newses)
     //start loader
     toggleSpinner(true);
 
@@ -81,12 +87,7 @@ const displayNewsNum = (newsNo) => {
     blockNewsNo.appendChild(newsNoDiv);
     // console.log(newsNo)
     newsFeild.innerHTML = '';
-    const newses = newsNo.data;
-    console.log(newses)
-    newses.sort((a, b) => {
-        return b.total_view - a.total_view;
-    });
-    console.log(newses)
+
 
     newses.forEach(news => {
         allNews(news._id)
@@ -114,17 +115,7 @@ const displayAllNews = (allNews) => {
     // views:allNews.data[0].total_view
     //rating :allNews.data[0].rating.number
 
-    // console.log(allNews.data[0]);
-    obj.push(allNews.data[0]);
-    //console.log(allNews.data[0].total_view);
 
-
-    //blockNewsNo.innerHTML = '';
-    //newsFeild.innerHTML = '';
-    // views.push({ allNews });
-
-    //newsNoDiv.classList.add('text-center');
-    //newsNoDiv.classList.add('d-sm-inline-block');
 
     try {
         const newsDiv = document.createElement('div');
@@ -159,7 +150,7 @@ const displayAllNews = (allNews) => {
                             <img src="${allNews.data[0].author.img}" class="rounded-circle news-img " alt="">
                             <div style="line-height : 15px;">
                                 <p class="fw-bold my-3 px-2">${allNews.data[0].author.name ? allNews.data[0].author.name : 'No author found'}</p>
-                                <p class="text-muted my-3 px-2">${allNews.data[0].author.published_date}</p>
+                                <p class="text-muted my-3 px-2">${allNews.data[0].author.published_date ? allNews.data[0].author.published_date : 'no date found'}</p>
                             </div>
                         </div>
                         <div class="d-flex">
@@ -224,6 +215,7 @@ const displayNewsDetails = news => {
         <hr>
         <p>Author Name: ${news.data[0].author.name ? news.data[0].author.name : 'No author found'}</p>
         <p>User View: ${news.data[0].total_view ? news.data[0].total_view : 'No view found'}</p>
+        <p>Published date: ${news.data[0].author.published_date ? news.data[0].author.published_date : 'no date found'}</p>
          
     `;
     }
