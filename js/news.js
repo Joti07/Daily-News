@@ -95,9 +95,10 @@ const displayNewsNum = (newsNo) => {
 }
 
 // -----------------------  news --------------------------------------------
-
+const obj = [];
 
 const displayAllNews = (allNews) => {
+
     //author name : allNews.data[0].author.name
     //publish date: allNews.data[0].author.published_date
     //auther image :allNews.data[0].author.img
@@ -106,19 +107,21 @@ const displayAllNews = (allNews) => {
     // headline: allNews.data[0].title
     // views:allNews.data[0].total_view
     //rating :allNews.data[0].rating.number
-
-    // console.log(allNews.data[0].rating.number);
+    obj.push(allNews.data[0]);
+    console.log(allNews);
     //blockNewsNo.innerHTML = '';
     //newsFeild.innerHTML = '';
-    views.push(allNews.data[0].total_view);
-    const newsDiv = document.createElement('div');
+    //views.push(allNews.data[0].total_view);
 
-    newsDiv.classList.add('p-2');
-    newsDiv.classList.add('m-5');
     //newsNoDiv.classList.add('text-center');
     //newsNoDiv.classList.add('d-sm-inline-block');
 
-    newsDiv.innerHTML = `
+    try {
+        const newsDiv = document.createElement('div');
+
+        newsDiv.classList.add('p-2');
+        newsDiv.classList.add('m-5');
+        newsDiv.innerHTML = `
     <div class="m-5">
     <div class="row">
         <div class="col-lg-12">
@@ -128,7 +131,7 @@ const displayAllNews = (allNews) => {
         </div>
     </div>
     <div class="row g-0">
-        <div class="col-md-6">
+        <div class="col-md-6 justify-content-center">
             <img src="${allNews.data[0].thumbnail_url}" class="img-fluid rounded-start" alt="...">
         </div>
         <div class="col-md-6 d-flex align-items-center">
@@ -144,7 +147,7 @@ const displayAllNews = (allNews) => {
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="d-flex">
                             <img src="${allNews.data[0].author.img}" class="rounded-circle news-img " alt="">
-                            <div style="line-height : 10px;">
+                            <div style="line-height : 15px;">
                                 <p class="fw-bold my-3 px-2">${allNews.data[0].author.name}</p>
                                 <p class="text-muted my-3 px-2">${allNews.data[0].author.published_date}</p>
                             </div>
@@ -159,6 +162,7 @@ const displayAllNews = (allNews) => {
                             
 
                         </div>
+                        <button onclick="newsDetails('${allNews.data[0]._id}')" href="#" class="btn" data-bs-toggle="modal" data-bs-target="#newsDetailModal">Show Details</button>
                     </div>
 
                 </div>
@@ -169,15 +173,17 @@ const displayAllNews = (allNews) => {
 </div>
          `
 
+        toggleSpinner(false);
 
-    toggleSpinner(false);
-
-    newsFeild.appendChild(newsDiv);
-
+        newsFeild.appendChild(newsDiv);
+    }
+    catch (error) {
+        console.log(error);
+    }
+    // console.log(allNews.data[0].details)
 
 }
-for (const view of views)
-    console.log(view)
+
 
 const toggleSpinner = isLoading => {
     const loaderSection = document.getElementById('loader');
@@ -188,4 +194,25 @@ const toggleSpinner = isLoading => {
         loaderSection.classList.add('d-none');
     }
 }
+
+const newsDetails = (code) => {
+    fetch(`https://openapi.programming-hero.com/api/news/${code}`)//${code}
+        .then(res => res.json())
+        .then(data => displayNewsDetails(data))
+    console.log(`https://openapi.programming-hero.com/api/news/${code}`)
+}
+const displayNewsDetails = news => {
+    try {
+
+        const newsDetails = document.getElementById('news-details');
+        newsDetails.innerHTML = `
+        <h3>Details:</h3>
+         ${news.data[0].details}
+    `;
+    }
+    catch (error) {
+        console.log(error)
+    }
+}
+
 NewsNumLoad('08');
