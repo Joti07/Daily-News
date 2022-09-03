@@ -29,10 +29,11 @@ const displayCategory = cat => {
 loadCategory();
 
 // -----------------------  news Numbers--------------------------------------------
-const NewsNumLoad = (code = 08) => {
+const NewsNumLoad = (code) => {
     fetch(`https://openapi.programming-hero.com/api/news/category/${code}`)
         .then(res => res.json())
         .then(data => displayNewsNum(data))
+    console.log(code);
 }
 const allNews = (code) => {
     fetch(`https://openapi.programming-hero.com/api/news/${code}`)//${code}
@@ -41,6 +42,7 @@ const allNews = (code) => {
     // console.log(code)
 }
 const newsFeild = document.getElementById('allNews');
+const views = [];
 const displayNewsNum = (newsNo) => {
 
     const blockNewsNo = document.getElementById('newsNo');
@@ -58,6 +60,12 @@ const displayNewsNum = (newsNo) => {
         `
 
     }
+    else if (newsNo.data.length == 26) {
+        newsNoDiv.innerHTML = `
+        ${newsNo.data.length} news found for All News Category 
+        `
+
+    }
     else {
         newsNoDiv.innerHTML = `
          ${newsNo.data.length} news found for this Category 
@@ -70,6 +78,7 @@ const displayNewsNum = (newsNo) => {
     // console.log(newsNo)
     newsFeild.innerHTML = '';
     const newses = newsNo.data;
+
     newses.forEach(news => {
         allNews(news._id)
 
@@ -97,6 +106,7 @@ const displayAllNews = (allNews) => {
     // console.log(allNews.data[0].rating.number);
     //blockNewsNo.innerHTML = '';
     //newsFeild.innerHTML = '';
+    views.push(allNews.data[0].total_view);
     const newsDiv = document.createElement('div');
 
     newsDiv.classList.add('p-2');
@@ -139,9 +149,9 @@ const displayAllNews = (allNews) => {
                             <i class="fa-regular fa-eye mx-2 my-1"></i>
                             <p class="fw-bold ">${allNews.data[0].total_view}</p>
                         </div>
-                        <div>
-                            <i class="fa-solid fa-star filled"></i>
-                            <p class="fw-bold my-3 px-2">${allNews.data[0].rating.number}</p>
+                        <div class="d-flex">
+                            <i class="fa-solid fa-star filled mx-2 my-2"></i>
+                            <p class="fw-bold  px-2">${allNews.data[0].rating.number}</p>
                             
 
                         </div>
@@ -162,7 +172,8 @@ const displayAllNews = (allNews) => {
 
 
 }
+for (const view of views)
+    console.log(view)
 
 
-
-//allNews();
+NewsNumLoad('08');
