@@ -39,7 +39,7 @@ const allNews = (code) => {
     fetch(`https://openapi.programming-hero.com/api/news/${code}`)//${code}
         .then(res => res.json())
         .then(data => displayAllNews(data))
-    // console.log(code)
+    // console.log(data)
 }
 const newsFeild = document.getElementById('allNews');
 const views = [];
@@ -82,6 +82,11 @@ const displayNewsNum = (newsNo) => {
     // console.log(newsNo)
     newsFeild.innerHTML = '';
     const newses = newsNo.data;
+    console.log(newses)
+    newses.sort((a, b) => {
+        return b.total_view - a.total_view;
+    });
+    console.log(newses)
 
     newses.forEach(news => {
         allNews(news._id)
@@ -96,6 +101,7 @@ const displayNewsNum = (newsNo) => {
 
 // -----------------------  news --------------------------------------------
 const obj = [];
+const view = [];
 
 const displayAllNews = (allNews) => {
 
@@ -107,12 +113,15 @@ const displayAllNews = (allNews) => {
     // headline: allNews.data[0].title
     // views:allNews.data[0].total_view
     //rating :allNews.data[0].rating.number
+
+    // console.log(allNews.data[0]);
     obj.push(allNews.data[0]);
+    //console.log(allNews.data[0].total_view);
 
 
     //blockNewsNo.innerHTML = '';
     //newsFeild.innerHTML = '';
-    //views.push(allNews.data[0].total_view);
+    // views.push({ allNews });
 
     //newsNoDiv.classList.add('text-center');
     //newsNoDiv.classList.add('d-sm-inline-block');
@@ -184,9 +193,9 @@ const displayAllNews = (allNews) => {
     // console.log(allNews.data[0].details)
 
 }
+console.log(typeof (obj))
 
 
-// console.log(obj.length)
 
 
 const toggleSpinner = isLoading => {
