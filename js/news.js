@@ -3,6 +3,7 @@ const loadCategory = () => {
     fetch('https://openapi.programming-hero.com/api/news/categories')
         .then(res => res.json())
         .then(data => displayCategory(data))
+        .catch(error => console.log(error))
 }
 const displayCategory = cat => {
     const blockCategory = document.getElementById('category');
@@ -33,12 +34,14 @@ const NewsNumLoad = (code) => {
     fetch(`https://openapi.programming-hero.com/api/news/category/${code}`)
         .then(res => res.json())
         .then(data => displayNewsNum(data))
+        .catch(error => console.log(error))
 
 }
 const allNews = (code) => {
     fetch(`https://openapi.programming-hero.com/api/news/${code}`)//${code}
         .then(res => res.json())
         .then(data => displayAllNews(data))
+        .catch(error => console.log(error))
     // console.log(data)
 }
 const newsFeild = document.getElementById('allNews');
@@ -203,6 +206,7 @@ const newsDetails = (code) => {
     fetch(`https://openapi.programming-hero.com/api/news/${code}`)//${code}
         .then(res => res.json())
         .then(data => displayNewsDetails(data))
+        .catch(error => console.log(error))
     //console.log(`https://openapi.programming-hero.com/api/news/${code}`)
 }
 const displayNewsDetails = news => {
